@@ -1,0 +1,4 @@
+FROM docker.io/library/fedora:latest
+
+COPY ./run-pipe.sh /usr/bin/run-pipe.sh
+COPY ./target/release/sidecar-logging /usr/bin/testlog

@@ -1,0 +1,8 @@
+FROM docker.io/timberio/vector:latest-debian
+
+COPY vector.toml /etc/vector/vector.toml
+
+COPY vector.sh /usr/bin/vector.sh
+COPY vector-test.sh /usr/bin/vector-test.sh
+
+ENTRYPOINT [ "/usr/bin/vector.sh" ]
