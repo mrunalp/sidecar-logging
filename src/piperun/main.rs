@@ -7,16 +7,15 @@ use nix::sys::stat;
 use anyhow::Result;
 use readable_perms::{Permissions, ChmodExt};
 
-fn main() -> Result<()>{
+fn main() -> Result<()> {
     const STDOUT: i32 = 1;
-    let fifo_path = Path::new("/var/log/shared/stdout.pipe");
 
-    match unistd::mkfifo(fifo_path, stat::Mode::S_IRWXO) {
-        Ok(_) => println!("Created fifo {:?}", fifo_path),
-        Err(err) => eprintln!("Error creating fifo: {}", err),
+    let fifo_path = Path::new("/var/log/shared/stdout.pipe");
+    if !fifo_path.exists() {
+        unistd::mkfifo(fifo_path, stat::Mode::S_IRWXO)?;
+        fifo_path.chmod(Permissions::from_mask(0o777))?;
     }
 
-    fifo_path.chmod(Permissions::from_mask(0o777))?;
     println!("Opening fifo for duping");
     let fd = OpenOptions::new()
         .read(false)
@@ -24,8 +23,8 @@ fn main() -> Result<()>{
         .open(fifo_path)?;
     let raw_fd = fd.into_raw_fd();
     unistd::dup2(raw_fd, STDOUT)?;
-    println!("Dup done, execing..");
 
+    println!("Dup done, exec'ing..");
     let path = CString::new("/usr/bin/testlog")?;
     let args:  Vec<CString> = Vec::new();
     unistd::execvp(&path, &args)?;
