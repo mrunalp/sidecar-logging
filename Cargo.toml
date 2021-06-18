@@ -7,7 +7,14 @@ edition = "2018"
 name = "testlog"
 path = "src/testlog/main.rs"
 
+[[bin]]
+name = "piperun"
+path = "src/piperun/main.rs"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 chrono = "0.4"
+nix = "0.21.0"
+anyhow = "1.0.41"
+readable-perms = "0.1.3"
