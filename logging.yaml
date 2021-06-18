@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logging
+spec:
+  containers:
+  - image: docker.io/mrunalp/testlog:latest
+    name: testlog
+    imagePullPolicy: IfNotPresent
+    command:
+    - /usr/bin/run-pipe.sh
+    args:
+    - testlog
+    volumeMounts:
+    - mountPath: /var/log/shared
+      name: log-volume
+  - image: docker.io/mrunalp/vector:latest
+    name: vector
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - mountPath: /var/log/shared
+      name: log-volume
+  volumes:
+  - name: log-volume
+    emptyDir: {}
