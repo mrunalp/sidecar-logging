@@ -1,4 +1,6 @@
 FROM docker.io/library/fedora:latest
 
-COPY ./run-pipe.sh /usr/bin/run-pipe.sh
+COPY ./target/release/piperun /usr/bin/piperun
 COPY ./target/release/testlog /usr/bin/testlog
+
+ENTRYPOINT [ "/usr/bin/piperun" ]

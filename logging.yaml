@@ -4,11 +4,9 @@ metadata:
   name: logging
 spec:
   containers:
-  - image: docker.io/mrunalp/testlog:latest
+  - image: docker.io/mrunalp/testlog:0.1
     name: testlog
     imagePullPolicy: IfNotPresent
-    command:
-    - /usr/bin/run-pipe.sh
     args:
     - testlog
     volumeMounts:
